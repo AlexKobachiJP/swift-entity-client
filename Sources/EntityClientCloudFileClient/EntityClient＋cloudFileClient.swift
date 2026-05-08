@@ -7,8 +7,8 @@ public import FileLocation
 import JsonHelpers
 
 extension EntityClient {
-  public static func location(_ location: IdentifiedLocation, baseLocation: (BaseLocation) -> CloudFileClient) -> EntityClient {
-    let fileClient: CloudFileClient = baseLocation(location.value)
+  public static func location(_ location: IdentifiedLocation, cloudFileClientProducer: CloudFileClientProducer) -> EntityClient {
+    let fileClient: CloudFileClient = cloudFileClientProducer(location.value)
     var entityClient = cloudFileClient(fileClient)
     entityClient.fileLocation = location
     return entityClient
