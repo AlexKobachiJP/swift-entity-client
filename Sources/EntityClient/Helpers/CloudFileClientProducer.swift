@@ -3,4 +3,4 @@
 public import CloudFileClient
 public import FileLocation
 
-public typealias CloudFileClientProducer = (BaseLocation) -> CloudFileClient
+public typealias CloudFileClientProducer = @Sendable (BaseLocation) -> CloudFileClient
