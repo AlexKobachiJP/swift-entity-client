@@ -13,7 +13,8 @@ extension EntityClient {
       
       let task = Task {
         do {
-          let client: MongoClient = try MongoClient(mongoDbUri, using: .singletonMultiThreadedEventLoopGroup)
+          let connectionString = mongoDbUri.trimmingCharacters(in: .init(charactersIn: "\""))
+          let client: MongoClient = try MongoClient(connectionString, using: .singletonMultiThreadedEventLoopGroup)
           defer {
             try? client.syncClose()
           }
