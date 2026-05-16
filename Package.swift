@@ -25,6 +25,7 @@ package.dependencies = [
   .package(url: "https://github.com/AlexKobachiJP/swift-crypto-helpers", from: "0.2.0"),
   .package(url: "https://github.com/AlexKobachiJP/swift-file-location", from: "0.3.8"),
   .package(url: "https://github.com/AlexKobachiJP/swift-json-helpers", from: "0.1.13"),
+  .package(url: "https://github.com/apple/swift-distributed-tracing", from: "1.4.1"),
   .package(url: "https://github.com/mongodb/mongo-swift-driver", from: "1.3.1"),
 ]
 
@@ -56,6 +57,7 @@ package.targets = [
     dependencies: [
       "EntityClient",
       .product(name: "MongoSwift", package: "mongo-swift-driver"),
+      .product(name: "Tracing", package: "swift-distributed-tracing"),
     ]
   ),
 ]
