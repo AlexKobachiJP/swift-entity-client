@@ -1,8 +1,10 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
 public import EntityClient
+import Foundation
 @preconcurrency import MongoSwift
 import Path
+import Tracing
 
 import struct CloudFileClient.EntityPage
 
@@ -31,6 +33,18 @@ extension EntityClient {
           var lastId: BSONObjectID?
           
           repeat {
+            let span = InstrumentationSystem.tracer.startSpan("MongoDB find \(collection)", ofKind: .client)
+            defer {
+              span.end()
+            }
+            span.attributes.set("db.system", value: "mongodb".toSpanAttribute())
+            span.attributes.set("db.namespace", value: "\(database).\(collection)".toSpanAttribute())
+            span.attributes.set("db.collection.name", value: collection.toSpanAttribute())
+            span.attributes.set("db.operation.name", value: "find".toSpanAttribute())
+            if let components = URLComponents(string: connectionString), let host = components.host {
+              span.attributes.set("server.address", value: host.toSpanAttribute())
+            }
+            
             try Task.checkCancellation()
             let query: BSONDocument = if let lastId { ["_id": [ "$gt": .objectID(lastId)] ] } else { [:] };
             let options = FindOptions(limit: pageSize, sort: [ "_id": .int32(1) ])
@@ -45,6 +59,8 @@ extension EntityClient {
             let encoder = ExtendedJSONEncoder()
             encoder.format = .canonical
             let data = try encoder.encode(documents)
+            span.attributes.set("http.response.body.size", value: data.count.toSpanAttribute())
+            
             let nextPath = lastId.map { path.appending(path: .init(stringLiteral: $0.hex)) }
             
             pageNumber += 1
