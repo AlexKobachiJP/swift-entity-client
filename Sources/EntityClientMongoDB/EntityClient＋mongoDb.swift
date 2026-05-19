@@ -3,13 +3,14 @@
 public import EntityClient
 import Foundation
 @preconcurrency import MongoSwift
+public import LoggingExtensions
 import Path
 import Tracing
 
 import struct CloudFileClient.EntityPage
 
 extension EntityClient {
-  public static func mongoDb(mongoDbUri: String, pageSize: Int = 200) -> EntityClient {
+  public static func mongoDb(mongoDbUri: String, pageSize: Int = 200, logger: Logger = Logger(label: "MongoDB")) -> EntityClient {
     .init { path in
       let (stream, continuation) = EntityPageStream.makeStream()
       
@@ -18,7 +19,12 @@ extension EntityClient {
           let connectionString = mongoDbUri.trimmingCharacters(in: .init(charactersIn: "\""))
           let client: MongoClient = try MongoClient(connectionString, using: .singletonMultiThreadedEventLoopGroup)
           defer {
-            try? client.syncClose()
+            do {
+              try client.syncClose()
+            } catch {
+              logger.error("💥 Error closing database:")
+              logger.error(error)
+            }
           }
           
           let components = path.components
