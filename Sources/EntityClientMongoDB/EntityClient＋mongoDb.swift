@@ -3,7 +3,7 @@
 public import EntityClient
 import Foundation
 @preconcurrency import MongoSwift
-public import LoggingExtensions
+public import Logging
 import Path
 import Tracing
 
@@ -22,8 +22,7 @@ extension EntityClient {
             do {
               try client.syncClose()
             } catch {
-              logger.error("💥 Error closing database:")
-              logger.error(error)
+              logger.error("💥 Error closing database:", error: error)
             }
           }
           
