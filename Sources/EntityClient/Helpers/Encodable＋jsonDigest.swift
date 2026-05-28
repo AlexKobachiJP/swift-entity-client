@@ -1,10 +1,10 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
-import JsonHelpers
+import Foundation
 
 extension Encodable {
   public func jsonDigest() throws -> JsonDigest {
-    let jsonData = try jsonData()
+    let jsonData = try JSONEncoder.entityEncoder().encode(self)
     return jsonData.jsonDigest()
   }
 }

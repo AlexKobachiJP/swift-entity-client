@@ -25,7 +25,6 @@ package.dependencies = [
   .package(url: "https://github.com/AlexKobachiJP/swift-config-client", from: "0.1.0"),
   .package(url: "https://github.com/AlexKobachiJP/swift-crypto-helpers", from: "0.2.0"),
   .package(url: "https://github.com/AlexKobachiJP/swift-file-location", from: "0.3.8"),
-  .package(url: "https://github.com/AlexKobachiJP/swift-json-helpers", from: "0.1.13"),
   .package(url: "https://github.com/apple/swift-distributed-tracing", from: "1.4.1"),
   .package(url: "https://github.com/apple/swift-log", from: "1.12.0"),
   .package(url: "https://github.com/mongodb/mongo-swift-driver", from: "1.3.1"),
@@ -39,7 +38,6 @@ package.targets = [
       .product(name: "FileHasher", package: "swift-crypto-helpers"),
       .product(name: "FileLocation", package: "swift-file-location"),
       .product(name: "SwiftExtensions", package: "swift-extensions"),
-      .product(name: "JsonHelpers", package: "swift-json-helpers"),
     ]
   ),
   .testTarget(
