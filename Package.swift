@@ -22,6 +22,7 @@ let package = Package(
 package.dependencies = [
   .package(url: "https://github.com/AlexKobachiJP/swift-extensions", from: "0.3.9"),
   .package(url: "https://github.com/AlexKobachiJP/swift-cloud-file-client", from: "0.1.1"),
+  .package(url: "https://github.com/AlexKobachiJP/swift-config-client", from: "0.1.0"),
   .package(url: "https://github.com/AlexKobachiJP/swift-crypto-helpers", from: "0.2.0"),
   .package(url: "https://github.com/AlexKobachiJP/swift-file-location", from: "0.3.8"),
   .package(url: "https://github.com/AlexKobachiJP/swift-json-helpers", from: "0.1.13"),
@@ -57,6 +58,7 @@ package.targets = [
     name: "EntityClientMongoDB",
     dependencies: [
       "EntityClient",
+      .product(name: "ConfigClientDependency", package: "swift-config-client"),
       .product(name: "Logging", package: "swift-log"),
       .product(name: "MongoSwift", package: "mongo-swift-driver"),
       .product(name: "Tracing", package: "swift-distributed-tracing"),

@@ -1,5 +1,6 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
+import ConfigClientDependency
 public import EntityClient
 import Foundation
 @preconcurrency import MongoSwift
@@ -10,7 +11,14 @@ import Tracing
 import struct CloudFileClient.EntityPage
 
 extension EntityClient {
-  public static func mongoDb(mongoDbUri: String, pageSize: Int = 200, logger: Logger = Logger(label: "MongoDB")) -> EntityClient {
+  public static func mongoDb() -> Self {
+    @ConfigValue(key: "mongodb.uri", isSecret: true, .required) var mongoDbUri: String
+    return .mongoDb(mongoDbUri: mongoDbUri)
+  }
+}
+  
+extension EntityClient {
+  public static func mongoDb(mongoDbUri: String, pageSize: Int = 200, logger: Logger = Logger(label: "MongoDB")) -> Self {
     .init { path in
       let (stream, continuation) = EntityPageStream.makeStream()
       
