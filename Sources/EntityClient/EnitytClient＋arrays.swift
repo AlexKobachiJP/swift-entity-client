@@ -1,19 +1,27 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
-public import CodingHelpers
+public import Entity
 import CloudFileClient
+import CodingHelpers
 public import Foundation
-import Path
+public import Path
 
 extension EntityClient {
-  public static func array<T: Encodable & Identifiable<String> & Sendable>(_ array: [T], encoder: JSONEncoder = .init(dateEncodingStrategy: .iso8601)) -> Self {
+  public static func arrays<T: Encodable & Identifiable<String> & Sendable>(
+    basePath: RelativeFilePath = .empty,
+    _ arrays: [RelativeFilePath: [T]],
+    encoder: JSONEncoder = .entityEncoder(dateEncodingStrategy: .iso8601)
+  ) -> Self {
     .init { path in
       let (stream, continuation) = EntityPageStream.makeStream()
       
       Task {
         do {
+          guard let array = arrays[path] else {
+            preconditionFailure("Cannot find array for path: '\(path)'")
+          }
           let page = EntityPage(
-            path: RelativeBaseRelativeFilePath(base: .empty, path: path),
+            path: RelativeBaseRelativeFilePath(base: basePath, path: path),
             number: 1,
             size: array.count,
             data: try array.encode(using: encoder)
