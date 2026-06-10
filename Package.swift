@@ -20,7 +20,7 @@ let package = Package(
 )
 
 package.dependencies = [
-  .package(url: "https://github.com/AlexKobachiJP/swift-cloud-file-client", from: "0.1.20"),
+  .package(url: "https://github.com/AlexKobachiJP/swift-cloud-file-client", from: "0.1.21"),
   .package(url: "https://github.com/AlexKobachiJP/swift-coding-helpers", from: "0.2.7"),
   .package(url: "https://github.com/AlexKobachiJP/swift-config-client", from: "0.1.0"),
   .package(url: "https://github.com/AlexKobachiJP/swift-crypto-helpers", from: "0.2.0"),

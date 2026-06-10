@@ -1,14 +1,13 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
 import ConfigClientDependency
+import Entity
 public import EntityClient
 import Foundation
 @preconcurrency import MongoSwift
 public import Logging
 import Path
 import Tracing
-
-import struct CloudFileClient.EntityPage
 
 extension EntityClient {
   public static func mongoDb() -> Self {
