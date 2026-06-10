@@ -1,6 +1,7 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
 public import CloudFileClient
+public import Entity
 public import FileLocation
 public import Path
 public import SwiftExtensions

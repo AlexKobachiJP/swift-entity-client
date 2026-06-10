@@ -1,6 +1,7 @@
 // Copyright © 2026 Alex Kovács. All rights reserved.
 
 public import CloudFileClient
+import Entity
 public import EntityClient
 public import FileClient
 public import FileLocation
