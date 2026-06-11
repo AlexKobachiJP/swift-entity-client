@@ -7,9 +7,9 @@ public import Foundation
 public import Path
 
 extension EntityClient {
-  public static func arrays<T: Encodable & Identifiable<String> & Sendable>(
+  public static func array<T: Encodable & Identifiable<String> & Sendable>(
     basePath: RelativeFilePath = .empty,
-    _ arrays: [RelativeFilePath: [T]],
+    _ array: [T],
     encoder: JSONEncoder = .entityEncoder(dateEncodingStrategy: .iso8601)
   ) -> Self {
     .init { path in
@@ -17,9 +17,6 @@ extension EntityClient {
       
       Task {
         do {
-          guard let array = arrays[path] else {
-            preconditionFailure("Cannot find array for path: '\(path)'")
-          }
           let page = EntityPage(
             path: RelativeBaseRelativeFilePath(base: basePath, path: path),
             number: 1,
