@@ -81,7 +81,7 @@ extension EntityClient {
               number: pageNumber,
               size: pageSize,
               data: data,
-              nextPage: nextPath.map { .path($0) }
+              nextPage: nextPath.map { .path(value: $0) }
             )
             continuation.yield(.left(page))
             
