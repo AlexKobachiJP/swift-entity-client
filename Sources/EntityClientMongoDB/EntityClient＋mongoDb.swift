@@ -34,25 +34,25 @@ extension EntityClient {
           let atlas = try MongoDBAtlas(mongoDbUri: mongoDbUri, database: database, logger: logger)
           try await atlas.connectWithTracingSpan(operation: "find", collection: collection) { db, span in
             var pageNumber = 0
-            var lastId: ObjectId?
+            var lastDocument: Document?
             
             repeat {
               try Task.checkCancellation()
-              let query: Document = if let lastId { ["_id": [ "$gt": lastId] ] } else { [:] };
+              let query: Document = lastDocument.map { ["_id": $0.idQuery(operator: "$gt") ] } ?? [:];
               let documents = try await db[collection]
                 .find(query)
                 .sort(["_id": .ascending])
                 .limit(pageSize)
                 .drain()
               
-              lastId = documents.count < pageSize ? nil : documents.last?.id
+              lastDocument = documents.count < pageSize ? nil : documents.last
               
               let encoder = ExtendedJSONEncoder()
               encoder.format = .canonical
               let data = try encoder.encode(documents)
               span.attributes.set("http.response.body.size", value: data.count.toSpanAttribute())
               
-              let nextPath = lastId.map { path.appending(path: .init(stringLiteral: $0.hexString)) }
+              let nextPath = lastDocument.map { path.appending(path: .init(stringLiteral: $0.idString)) }
               
               pageNumber += 1
               let page = EntityPage(
@@ -65,12 +65,12 @@ extension EntityClient {
               continuation.yield(.left(page))
               
               for document in documents {
-                let entity = Entity(id: document.id.hexString) {
+                let entity = Entity(id: document.idString) {
                   try document.jsonData().jsonDigest()
                 }
                 continuation.yield(.right(entity))
               }
-            } while lastId != nil
+            } while lastDocument != nil
           }
 
           continuation.finish()

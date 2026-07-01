@@ -27,7 +27,7 @@ package.dependencies = [
   .package(url: "https://github.com/AlexKobachiJP/swift-entity", from: "0.1.4"),
   .package(url: "https://github.com/AlexKobachiJP/swift-extensions", from: "0.3.9"),
   .package(url: "https://github.com/AlexKobachiJP/swift-file-location", from: "0.3.8"),
-  .package(url: "https://github.com/AlexKobachiJP/swift-mongodb-helpers", from: "0.1.0"),
+  .package(url: "https://github.com/AlexKobachiJP/swift-mongodb-helpers", from: "0.1.9"),
   .package(url: "https://github.com/apple/swift-distributed-tracing", from: "1.4.1"),
   .package(url: "https://github.com/apple/swift-log", from: "1.12.0"),
 ]
